@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUI Controls Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        #progress-bar {
+            width: 200px;
+            height: 20px;
+            border: 1px solid #000;
+            background-color: #f3f3f3;
+            position: relative;
+            margin-top: 10px;
+        }
+        #progress {
+            width: 0;
+            height: 100%;
+            background-color: #4caf50;
+            position: absolute;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            width: 220px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>GUI Controls Example</h1>
+    <label id="dynamic-label">Label Text</label>
+    <br>
+    <button id="click-button">Click Me</button>
+    <br>
+    <input type="text" id="text-entry" placeholder="Type something">
+    <br>
+    <input type="checkbox" id="checkbox"> Check Me
+    <br>
+    <div id="progress-bar">
+        <div id="progress"></div>
+    </div>
+    <div class="button-group">
+        <button id="start-button">Start Progress</button>
+        <button id="stop-button" disabled>Stop Progress</button>
+    </div>
+
+    <script>
+        // Get elements
+        const dynamicLabel = document.getElementById('dynamic-label');
+        const clickButton = document.getElementById('click-button');
+        const textEntry = document.getElementById('text-entry');
+        const checkbox = document.getElementById('checkbox');
+        const progressBar = document.getElementById('progress');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+        
+        // Event handler for button click
+        clickButton.addEventListener('click', () => {
+            dynamicLabel.textContent = 'Button clicked!';
+        });
+
+        // Event handler for text entry
+        textEntry.addEventListener('input', () => {
+            dynamicLabel.textContent = textEntry.value;
+        });
+
+        // Event handler for checkbox toggle
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                dynamicLabel.textContent = 'Checkbox checked!';
+            } else {
+                dynamicLabel.textContent = 'Checkbox unchecked!';
+            }
+        });
+
+        // Variables for progress bar
+        let progressInterval;
+
+        // Function to start progress
+        function startProgress() {
+            progressBar.style.width = '0%';
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            progressInterval = setInterval(() => {
+                let currentWidth = parseInt(progressBar.style.width);
+                if (currentWidth >= 100) {
+                    clearInterval(progressInterval);
+                } else {
+                    progressBar.style.width = (currentWidth + 1) + '%';
+                }
+            }, 100);
+        }
+
+        // Function to stop progress
+        function stopProgress() {
+            clearInterval(progressInterval);
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        }
+
+        // Event handlers for progress bar buttons
+        startButton.addEventListener('click', startProgress);
+        stopButton.addEventListener('click', stopProgress);
+    </script>
+
+</body>
+</html>
